@@ -8,6 +8,7 @@ Hell Of World の
 非公式サイトです
 詳しくは→ https://scratch.mit.edu/studios/50976499/ で
 是非 tgrk_2024tgProject_Official@outlook.jp にTeamsやメールなどでご連絡ください
+サイトを作るのが初めてなので少しへたかもしれません
 !このサイトは製作中です!
 
 Yeah
