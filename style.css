@@ -26,7 +26,7 @@ h3 {
 }
 
 h5 {
-  font-size: 18px;
+  font-size: 10px;
   text-align: center;
 }
 
@@ -34,4 +34,5 @@ body {
   font-size: 14px;
   font-family: "JF-Dot-Ayu18","Yu Gothic",sans-serif;
   margin-top: 5px;
+  text-align: center;
 }
