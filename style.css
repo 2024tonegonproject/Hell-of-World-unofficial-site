@@ -38,3 +38,6 @@ body {
 p {
     text-align: center;
 }
+p a {
+  display: inline-block;
+}
