@@ -251,6 +251,7 @@ targets.forEach(target => observer.observe(target));</script>
 
     function renderComment(c, container) {
       const div = document.createElement("div");
+      div.style.color = "white";
       div.className = "comment-box";
 
       const date = new Date(c.date).toLocaleString();
