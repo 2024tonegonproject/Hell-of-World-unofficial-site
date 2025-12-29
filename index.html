@@ -330,7 +330,7 @@ targets.forEach(target => observer.observe(target));</script>
 
       fetch(WORKER_URL + "?id=" + id, {
         method: "DELETE"
-      }).then(() => window.onload = function () { location.reload(true); });
+      }).then(() => loadComments);
     }
 
     loadComments();
