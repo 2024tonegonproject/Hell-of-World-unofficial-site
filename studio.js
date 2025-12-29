@@ -40,3 +40,4 @@ async function loadStudioProjects() {
 }
 
 loadStudioProjects();
+console.log("studio.js loaded");
