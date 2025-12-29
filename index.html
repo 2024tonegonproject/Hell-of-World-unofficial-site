@@ -200,8 +200,9 @@
         crossorigin="anonymous"
         async>
     </script>
+    <p>ここに表示されていない場合はリロードしてください</p>
     <h1>コメント欄(Githubアカウント不要、ディスカッションと同じ)</h1>
-    <div id="comments"></div>
+    <div class="no-fade" id="comments"></div>
     <form id="commentForm">
   <input type="text" id="name" placeholder="名前" required>
   <textarea id="message" placeholder="メッセージ" required></textarea>
@@ -293,7 +294,7 @@ targets.forEach(target => observer.observe(target));</script>
       });
 
       document.getElementById("message").value = "";
-      loadComments();
+      loadComments;
     });
 
     function replyTo(parentId) {
@@ -306,7 +307,7 @@ targets.forEach(target => observer.observe(target));</script>
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, message, parent: parentId })
-      }).then(() => loadComments());
+      }).then(() => loadComments);
     }
 
     function deleteComment(id) {
@@ -314,7 +315,7 @@ targets.forEach(target => observer.observe(target));</script>
 
       fetch(WORKER_URL + "?id=" + id, {
         method: "DELETE"
-      }).then(() => loadComments());
+      }).then(() => loadComments);
     }
 
     loadComments();
