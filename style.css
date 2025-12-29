@@ -42,9 +42,9 @@ p {
   height: auto;
   display: block;
   margin: 30px auto 0; 
+  float: left;
 }
 .ctrs
 {
   font-size: 20px;
-  float: left;
 }
