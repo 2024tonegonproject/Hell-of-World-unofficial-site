@@ -26,7 +26,7 @@
         async>
     </script>
     <h2>ディスカッション(Githubアカウント不要)</h2>
-    
+
 <form id="commentForm">
   <input type="text" id="name" placeholder="名前" required>
   <textarea id="message" placeholder="メッセージ" required></textarea>
@@ -40,7 +40,7 @@ document.getElementById("commentForm").addEventListener("submit", async (e) => {
   const name = document.getElementById("name").value;
   const message = document.getElementById("message").value;
 
-  const res = await fetch("https://樹さんの-worker-url", {
+  const res = await fetch("https://noisy-sound-60af.tgrk-2024tgproject-official.workers.dev/", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ name, message })
