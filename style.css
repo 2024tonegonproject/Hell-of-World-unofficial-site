@@ -50,6 +50,13 @@ p {
   display: inline-block;
   vertical-align: middle;
 }
+
+#scratch-projects {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
 .scratch-thumb {
   width: 200px;
   aspect-ratio: 4 / 3;
@@ -66,3 +73,4 @@ p {
     transform: translateY(0);
   }
 }
+
