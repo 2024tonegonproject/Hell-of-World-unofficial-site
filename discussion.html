@@ -26,11 +26,13 @@ fetch("projects.json?v=" + Date.now())
           class="scratch-thumb"
         >
       `;
+      img.style.animationDelay = `${index * 0.1}s`;
+
+      link.appendChild(img);
 
       container.appendChild(link);
     });
   });
 </script>
-  <script src="fade.js"></script>
 </body>
 </html>
