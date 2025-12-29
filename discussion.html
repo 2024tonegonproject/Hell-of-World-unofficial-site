@@ -26,14 +26,33 @@
         async>
     </script>
     <h2>ディスカッション(Githubアカウント不要)</h2>
-    <div id="comments"></div>
-    <form action="https://staticman3.herokuapp.com/v3/entry/github/2024tonegonproject/Hell-of-World-official-site/main/comments" method="POST">
-    <input name="name" placeholder="名前（任意）">
-    <textarea name="message" placeholder="コメント" required></textarea>
-    <button type="submit">送信</button>
-    </form>
+    <form id="commentForm">
+  <input type="text" id="name" placeholder="テストコード" required>
+  <textarea id="message" placeholder="テストコード" required></textarea>
+  <button type="submit">送信</button>
+</form>
+
+<script>
+document.getElementById("commentForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const name = document.getElementById("name").value;
+  const message = document.getElementById("message").value;
+
+  const res = await fetch("https://樹さんの-worker-url", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name, message })
+  });
+
+  if (res.ok) {
+    alert("送信しました！");
+  } else {
+    alert("エラーが起きました…");
+  }
+});
+</script>
     
-<script src="fade.js"></script>
 <script src="comment.js"></script>
 </script>
 </body>
