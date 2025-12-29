@@ -57,13 +57,13 @@ p {
     transform: translateY(0);
   }
 }
-.fade-up {
+body * {
   opacity: 0;
-  transform: translateY(30px);
+  transform: translateY(20px);
   transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
-.fade-up.show {
+body *.show {
   opacity: 1;
   transform: translateY(0);
 }
