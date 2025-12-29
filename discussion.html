@@ -8,13 +8,28 @@
 <body>
   <h1>ディスカッション+HOWスタジオ作品全掲載</h1>
   <h2>スタジオの作品一覧</h2>
-  <iframe 
-  src="https://scratch.mit.edu/studios/50976499/embed" 
-  allowtransparency="true" 
-  width="485" 
-  height="402" 
-  frameborder="0" 
-  scrolling="no">
-</iframe>
+  <div id="scratch-projects"></div>
+<script>
+fetch("projects.json")
+  .then(res => res.json())
+  .then(projects => {
+    const container = document.getElementById("scratch-projects");
+
+    projects.forEach(project => {
+      const link = document.createElement("a");
+      link.href = `https://scratch.mit.edu/projects/${project.id}/`;
+      link.target = "_blank";
+
+      link.innerHTML = `
+        <img 
+          src="https://cdn2.scratch.mit.edu/get_image/project/${project.id}_282x210.png"
+          class="scratch-thumb"
+        >
+      `;
+
+      container.appendChild(link);
+    });
+  });
+</script>
 </body>
 </html>
