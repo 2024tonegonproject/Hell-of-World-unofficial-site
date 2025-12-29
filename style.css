@@ -51,8 +51,16 @@ p {
   vertical-align: middle;
 }
 .scratch-thumb {
-  width: 200px;        /* 横幅だけ決める */
-  aspect-ratio: 4 / 3; /* Scratch のサムネ比率 */
-  object-fit: cover;   /* はみ出しを自然に調整 */
+  width: 200px;
   border-radius: 6px;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.6s ease forwards;
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
