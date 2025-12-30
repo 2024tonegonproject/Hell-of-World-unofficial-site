@@ -26,8 +26,6 @@
         async>
     </script>
     <h2>ディスカッション(Githubアカウント不要)</h2>
-<div id="comments"></div>
-
 <form id="DiscussionForm">
   <input id="DiscussionTitle" placeholder="ディスカッションタイトル">
   <button>新しくディスカッションを立てる</button>
@@ -37,6 +35,9 @@
   <textarea id="message" placeholder="メッセージ" required></textarea>
   <button type="submit">送信</button>
 </form>
+    <div id="comments"></div>
+    <div id="Discussion"></div>
+
 <h5>© 2025 2024tonegonproject | Hell of World © 2025 Siratama1538 | UNDERTALE © Toby Fox 2013–2025. All rights reserved.<br>
       This site Is a UNDERTALE's fan-made game "Hell of World" site.<br>
       このサイトはUNDERTALEのファンメイドゲーム、「Hell of World」のサイトです。<br>
@@ -67,14 +68,14 @@ async function loadDiscussions() {
   const res = await fetch(WORKER_URL);
   const comments = await res.json();
 
-  const Discussion = comments.filter(c => c.parent === null);
+  const threads = comments.filter(c => c.parent === null);
 
   const container = document.getElementById("Discussion");
   container.innerHTML = "";
 
-  Discussion.forEach(t => {
+  threads.forEach(t => {
     const a = document.createElement("a");
-    a.href = `?Discussion=${t.DiscussionId}`;
+    a.href = `?Discussion=${t.threadId}`;
     a.textContent = t.message;
     container.appendChild(a);
   });
