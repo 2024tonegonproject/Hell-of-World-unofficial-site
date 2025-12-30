@@ -257,7 +257,7 @@ async function loadComments() {
 function renderTree(comments, parentId, container, level) {
   comments
     .filter(c => c.parent === parentId)
-    .sort((a, b) => a.date - b.date)
+    .sort((a, b) => b.date - a.date)
     .forEach(c => {
       if (level === 0) {
         renderComment(c, container, comments, level);
@@ -306,7 +306,7 @@ function renderReply(c, container, comments, level) {
 
   div.innerHTML = `
     ↳ <strong>${c.name}</strong> <span style="opacity:0.7;">(${date})</span><br>
-    <span style="opacity:0.7;">@${parentName} さんへ</span><br>
+    <span style="opacity:0.7;">@${parentName}</span><br>
     ${c.message}<br>
     <button onclick="replyTo('${c.id}')">返信</button>
     <button onclick="deleteComment('${c.id}')">削除</button>
