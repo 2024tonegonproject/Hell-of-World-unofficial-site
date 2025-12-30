@@ -210,6 +210,8 @@ document.getElementById("discussionForm")?.addEventListener("submit", async (e) 
   const title = document.getElementById("discussionTitle").value;
   const discussionId = crypto.randomUUID();
 
+  console.log("discussionId:", discussionId);
+
   await fetch(WORKER_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
