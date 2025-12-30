@@ -254,19 +254,28 @@ targets.forEach(target => observer.observe(target));
 <script>
 const WORKER_URL = "https://noisy-sound-60af.tgrk-2024tgproject-official.workers.dev/";
 
-/* -----------------------------------
-   コメント一覧を読み込む
------------------------------------ */
 async function loadComments() {
+  const params = new URLSearchParams(location.search);
+  const discussionId = params.get("discussion");
+
   const res = await fetch(WORKER_URL);
   const comments = await res.json();
+
+  console.log("取得した comments:", comments); 
+
+  if (!discussionId) {
+    loadDiscussions(comments);
+    return;
+  }
+
+  const filtered = comments.filter(c => c.discussionId === discussionId);
 
   const container = document.getElementById("comments");
   container.innerHTML = "";
 
-  // 親（parent=null）からツリー描画開始
-  renderTree(comments, null, container, 0);
+  renderTree(filtered, null, container, 0);
 }
+
 
 /* -----------------------------------
    無限ネスト対応のツリー描画
@@ -282,7 +291,6 @@ function renderTree(comments, parentId, container, level) {
         renderReply(c, container, comments, level);
       }
 
-      // 再帰（子コメントを描画）
       renderTree(comments, c.id, container, level + 1);
     });
 }
@@ -292,6 +300,7 @@ function renderTree(comments, parentId, container, level) {
 ----------------------------------- */
 function renderComment(c, container, comments, level) {
   const div = document.createElement("div");
+  div.id = c.id;
   div.className = "comment-box fade-up show";
   div.style.marginLeft = (level * 20) + "px";
 
@@ -312,12 +321,11 @@ function renderComment(c, container, comments, level) {
 ----------------------------------- */
 function renderReply(c, container, comments, level) {
   const div = document.createElement("div");
+  div.id = c.id;
   div.className = "reply-box fade-up show";
   div.style.marginLeft = (level * 20) + "px";
 
   const date = new Date(c.date).toLocaleString();
-
-  // 親コメントの名前を取得
   const parentComment = comments.find(x => x.id === c.parent);
   const parentName = parentComment ? parentComment.name : "不明";
 
@@ -333,10 +341,13 @@ function renderReply(c, container, comments, level) {
 }
 
 /* -----------------------------------
-   新規コメント投稿
+   新規コメント投稿（discussion対応）
 ----------------------------------- */
-document.getElementById("commentForm").addEventListener("submit", async (e) => {
+document.getElementById("commentForm")?.addEventListener("submit", async (e) => {
   e.preventDefault();
+
+  const params = new URLSearchParams(location.search);
+  const discussionId = params.get("discussion");
 
   const name = document.getElementById("name").value;
   const message = document.getElementById("message").value;
@@ -344,7 +355,7 @@ document.getElementById("commentForm").addEventListener("submit", async (e) => {
   await fetch(WORKER_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name, message })
+    body: JSON.stringify({ discussionId, name, message })
   });
 
   document.getElementById("message").value = "";
@@ -352,19 +363,53 @@ document.getElementById("commentForm").addEventListener("submit", async (e) => {
 });
 
 /* -----------------------------------
-   返信投稿
+   返信投稿（discussion対応）
 ----------------------------------- */
 function replyTo(parentId) {
-  const name = prompt("名前");
-  const message = prompt("返信内容");
+  // すでにフォームが出ていたら消す
+  const oldForm = document.getElementById("replyForm");
+  if (oldForm) oldForm.remove();
 
-  if (!message) return;
+  // フォームを作る
+  const form = document.createElement("div");
+  form.id = "replyForm";
+  form.style.margin = "10px 0";
+  form.style.padding = "10px";
+  form.style.border = "1px solid #ccc";
+  form.style.borderRadius = "6px";
+  form.style.background = "#fafafa";
 
-  fetch(WORKER_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name, message, parent: parentId })
-  }).then(() => loadComments());
+  form.innerHTML = `
+    <input id="replyName" placeholder="名前" style="display:block; margin-bottom:5px; width:200px;">
+    <textarea id="replyMessage" placeholder="返信内容" style="display:block; margin-bottom:5px; width:300px; height:60px;"></textarea>
+    <button id="replySend">送信</button>
+  `;
+
+  // 親コメントの下に挿入
+  const parentDiv = document.getElementById(parentId);
+  parentDiv.after(form);
+
+  // 送信処理
+  document.getElementById("replySend").onclick = async () => {
+    const name = document.getElementById("replyName").value;
+    const message = document.getElementById("replyMessage").value;
+
+    if (!message) return;
+
+    await fetch(WORKER_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        discussionId: new URLSearchParams(location.search).get("discussion"),
+        name,
+        message,
+        parent: parentId
+      })
+    });
+
+    form.remove();
+    loadComments();
+  };
 }
 
 /* -----------------------------------

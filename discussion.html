@@ -11,16 +11,12 @@
   <div id="scratch-projects"></div>
   
       <h2>ディスカッション(Githubアカウント不要)</h2>
-<form id="discussionForm">
-  <input id="discussionTitle">
-  <button>ディスカッション立て</button>
 </form>
 <form id="commentForm">
   <input type="text" id="name" placeholder="名前" required>
   <textarea id="message" placeholder="メッセージ" required></textarea>
   <button type="submit">送信</button>
 </form>
-    <div id="discusions"></div>
     <div id="comments"></div>
   <h2>ディスカッション(Githubアカウント必要)</h2>
     <script src="https://giscus.app/client.js"
@@ -71,24 +67,6 @@ async function loadComments() {
   renderTree(filtered, null, container, 0);
 }
 
-/* -----------------------------------
-   ディスカッション一覧を表示
------------------------------------ */
-function loadDiscussions(comments) {
-  const container = document.getElementById("discussions");
-  container.innerHTML = "";
-
-  // parent=null のコメントをディスカッションとして扱う
-  const discussions = comments.filter(c =>
-  c.parent === null && c.discussionId === c.id);
-
-
-  discussions.forEach(t => {
-    const div = document.createElement("div");
-    div.innerHTML = `<a href="?discussion=${t.discussionId}">${t.message}</a>`;
-    container.appendChild(div);
-  });
-}
 
 /* -----------------------------------
    無限ネスト対応のツリー描画
@@ -235,32 +213,6 @@ function deleteComment(id) {
     method: "DELETE"
   }).then(() => loadComments());
 }
-
-/* -----------------------------------
-   ディスカッション作成（discussionId を生成）
------------------------------------ */
-document.getElementById("discussionForm")?.addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  const title = document.getElementById("discussionTitle").value;
-  const discussionId = crypto.randomUUID();
-
-  console.log("discussionId:", discussionId);
-
-  await fetch(WORKER_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      discussionId,
-      name: "誰か",
-      message: title,
-      parent: null
-    })
-  });
-
-  location.href = `?discussion=${discussionId}`;
-  console.log(discussionId)
-});
 
 /* -----------------------------------
    初回ロード
