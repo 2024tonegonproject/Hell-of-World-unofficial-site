@@ -49,35 +49,34 @@ const WORKER_URL = "https://noisy-sound-60af.tgrk-2024tgproject-official.workers
    コメント一覧を読み込む
 ----------------------------------- */
 async function loadComments() {
+  const params = new URLSearchParams(location.search);
+  const DiscussionId = params.get("Discussion");
+
   const res = await fetch(WORKER_URL);
   const comments = await res.json();
+
+  const filtered = comments.filter(c => c.Discussion === DiscussionId);
 
   const container = document.getElementById("comments");
   container.innerHTML = "";
 
-  // 親（parent=null）からツリー描画開始
-  renderTree(comments, null, container, 0);
+  renderTree(filtered, null, container, 0);
 }
 
-async function loadDisccusions() {
+async function loadDiscussions() {
   const res = await fetch(WORKER_URL);
   const comments = await res.json();
 
-  const Discussion = {};
-
-  comments.forEach(c => {
-    if (!Discussion[c.DiscussionId]) {
-      Discussion[c.DiscussionId] = c;
-    }
-  });
+  const Discussion = comments.filter(c => c.parent === null);
 
   const container = document.getElementById("Discussion");
   container.innerHTML = "";
 
-  Object.values(Discussion).forEach(t => {
-    const div = document.createElement("div");
-    div.innerHTML = `<a href="?Discussion=${t.DiscussionId}">${t.message}</a>`;
-    container.appendChild(div);
+  Discussion.forEach(t => {
+    const a = document.createElement("a");
+    a.href = `?Discussion=${t.DiscussionId}`;
+    a.textContent = t.message;
+    container.appendChild(a);
   });
 }
 
@@ -188,6 +187,7 @@ document.getElementById("DiscussionForm").addEventListener("submit", async (e) =
   DiscussionId,
 
   location.href = `?Discussion=${DiscussionId}`;
+  loadDiscussions();
 });
 
 /* -----------------------------------
@@ -224,6 +224,7 @@ function deleteComment(id) {
    初回ロード
 ----------------------------------- */
 loadComments();
+loadDiscussions();
 </script>
 
 </body>
