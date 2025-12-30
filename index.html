@@ -286,13 +286,15 @@ targets.forEach(target => observer.observe(target));</script>
 
       const date = new Date(c.date).toLocaleString();
 
-      div.innerHTML = `
-        ↳ <strong>${c.name}</strong> <span style="opacity:0.7;">(${date})</span><br>
-        ${c.message}<br>
-        <button onclick="replyTo('${c.id}')">返信</button>
-        <button onclick="deleteComment('${c.id}')">削除</button>
-      `;
+      const parentComment = comments.find(x => x.id === c.parent);
+      const parentName = parentComment ? parentComment.name : "不明";
 
+      div.innerHTML = `
+      ↳ <strong>${c.name}</strong> <span style="opacity:0.7;">(${date})</span><br>
+      <span style="opacity:0.7;">@${parentName} </span><br>
+      ${c.message}<br>
+      <button onclick="replyTo('${c.id}')">返信</button>
+      <button onclick="deleteComment('${c.id}')">削除</button>` ;
       div.classList.add("fade-up", "show");
 
       container.appendChild(div);
