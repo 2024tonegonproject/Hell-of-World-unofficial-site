@@ -1,6 +1,6 @@
 @font-face {
   font-family: "JF-Dot-Ayu18";
-  src: url("https://cdn.jsdelivr.net/gh/2024tonegonproject/Hell-of-World-official-site@main/fonts/JF-Dot-Ayu18.ttf") format("truetype");
+  src: url("fonts/JF-Dot-Ayu-18.woff") format("woff");
 }
 
 h1 {
@@ -73,3 +73,16 @@ p {
     transform: translateY(0);
   }
 }
+.comment-box {
+    background: rgba(255,255,255,0.1);
+    padding: 10px;
+    border-radius: 8px;
+    margin: 10px 0;
+  }
+
+  .reply-box {
+    background: rgba(255,255,255,0.05);
+    padding: 10px;
+    border-radius: 8px;
+    margin: 5px 0;
+  }
