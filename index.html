@@ -223,7 +223,8 @@
       This site Is a UNDERTALE's fan-made game "Hell of World" site.<br>
       このサイトはUNDERTALEのファンメイドゲーム、「Hell of World」のサイトです。<br>
       </h5>
-<script>const targets = document.querySelectorAll('body *');
+<script>
+const targets = document.querySelectorAll('body *');
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -232,8 +233,9 @@ const observer = new IntersectionObserver((entries) => {
     }
   });
 });
+targets.forEach(target => observer.observe(target));
+</script>
 
-targets.forEach(target => observer.observe(target));</script>
 <script>
 const WORKER_URL = "https://noisy-sound-60af.tgrk-2024tgproject-official.workers.dev/";
 
