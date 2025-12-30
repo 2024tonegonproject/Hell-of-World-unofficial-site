@@ -36,7 +36,7 @@
   <button type="submit">送信</button>
 </form>
     <div id="comments"></div>
-    <div id="Discussion"></div>
+    <div id="discusion"></div>
 
 <h5>© 2025 2024tonegonproject | Hell of World © 2025 Siratama1538 | UNDERTALE © Toby Fox 2013–2025. All rights reserved.<br>
       This site Is a UNDERTALE's fan-made game "Hell of World" site.<br>
@@ -47,16 +47,23 @@
 const WORKER_URL = "https://noisy-sound-60af.tgrk-2024tgproject-official.workers.dev/";
 
 /* -----------------------------------
-   コメント一覧を読み込む
+   コメント一覧を読み込む（discussion対応）
 ----------------------------------- */
 async function loadComments() {
   const params = new URLSearchParams(location.search);
-  const DiscussionId = params.get("Discussion");
+  const discussionId = params.get("discussion");
 
   const res = await fetch(WORKER_URL);
   const comments = await res.json();
 
-  const filtered = comments.filter(c => c.Discussion === DiscussionId);
+  // discussionId が無い → 一覧ページ
+  if (!discussionId) {
+    loadDiscussions(comments);
+    return;
+  }
+
+  // discussionId がある → そのディスカッションのコメントだけ表示
+  const filtered = comments.filter(c => c.discussionId === discussionId);
 
   const container = document.getElementById("comments");
   container.innerHTML = "";
@@ -64,20 +71,20 @@ async function loadComments() {
   renderTree(filtered, null, container, 0);
 }
 
-async function loadDiscussions() {
-  const res = await fetch(WORKER_URL);
-  const comments = await res.json();
-
-  const threads = comments.filter(c => c.parent === null);
-
-  const container = document.getElementById("Discussion");
+/* -----------------------------------
+   ディスカッション一覧を表示
+----------------------------------- */
+function loadDiscussions(comments) {
+  const container = document.getElementById("discussions");
   container.innerHTML = "";
 
-  threads.forEach(t => {
-    const a = document.createElement("a");
-    a.href = `?Discussion=${t.threadId}`;
-    a.textContent = t.message;
-    container.appendChild(a);
+  // parent=null のコメントをディスカッションとして扱う
+  const discussions = comments.filter(c => c.parent === null);
+
+  discussions.forEach(t => {
+    const div = document.createElement("div");
+    div.innerHTML = `<a href="?discussion=${t.discussionId}">${t.message}</a>`;
+    container.appendChild(div);
   });
 }
 
@@ -95,7 +102,6 @@ function renderTree(comments, parentId, container, level) {
         renderReply(c, container, comments, level);
       }
 
-      // 再帰（子コメントを描画）
       renderTree(comments, c.id, container, level + 1);
     });
 }
@@ -129,8 +135,6 @@ function renderReply(c, container, comments, level) {
   div.style.marginLeft = (level * 20) + "px";
 
   const date = new Date(c.date).toLocaleString();
-
-  // 親コメントの名前を取得
   const parentComment = comments.find(x => x.id === c.parent);
   const parentName = parentComment ? parentComment.name : "不明";
 
@@ -146,13 +150,13 @@ function renderReply(c, container, comments, level) {
 }
 
 /* -----------------------------------
-   新規コメント投稿
+   新規コメント投稿（discussion対応）
 ----------------------------------- */
-document.getElementById("commentForm").addEventListener("submit", async (e) => {
+document.getElementById("commentForm")?.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const params = new URLSearchParams(location.search);
-  const DiscussionId = params.get("Discussion");  // ★ URL から threadId を取得
+  const discussionId = params.get("discussion");
 
   const name = document.getElementById("name").value;
   const message = document.getElementById("message").value;
@@ -160,7 +164,7 @@ document.getElementById("commentForm").addEventListener("submit", async (e) => {
   await fetch(WORKER_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ DiscussionId, name, message })  // ★ threadId を送る
+    body: JSON.stringify({ discussionId, name, message })
   });
 
   document.getElementById("message").value = "";
@@ -168,36 +172,11 @@ document.getElementById("commentForm").addEventListener("submit", async (e) => {
 });
 
 /* -----------------------------------
-   新規ディスカッション投稿
------------------------------------ */
-document.getElementById("DiscussionForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  const name = document.getElementById("name").value;
-  const title = document.getElementById("DiscussionTitle").value;
-  const DiscussionId = crypto.randomUUID();
-
-  await fetch(WORKER_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      DiscussionId,
-      name: "name",
-      message: title,
-      parent: null })
-  });
-  DiscussionId,
-
-  location.href = `?Discussion=${DiscussionId}`;
-  loadDiscussions();
-});
-
-/* -----------------------------------
-   返信投稿
+   返信投稿（discussion対応）
 ----------------------------------- */
 function replyTo(parentId) {
   const params = new URLSearchParams(location.search);
-  const DiscussionId = params.get("Discussion");
+  const discussionId = params.get("discussion");
 
   const name = prompt("名前");
   const message = prompt("返信内容");
@@ -207,7 +186,7 @@ function replyTo(parentId) {
   fetch(WORKER_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ DiscussionId, name, message, parent: parentId })
+    body: JSON.stringify({ discussionId, name, message, parent: parentId })
   }).then(() => loadComments());
 }
 
@@ -223,10 +202,32 @@ function deleteComment(id) {
 }
 
 /* -----------------------------------
+   ディスカッション作成（discussionId を生成）
+----------------------------------- */
+document.getElementById("discussionForm")?.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const title = document.getElementById("discussionTitle").value;
+  const discussionId = crypto.randomUUID();
+
+  await fetch(WORKER_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      discussionId,
+      name: "誰か",
+      message: title,
+      parent: null
+    })
+  });
+
+  location.href = `?discussion=${discussionId}`;
+});
+
+/* -----------------------------------
    初回ロード
 ----------------------------------- */
 loadComments();
-loadDiscussions();
 </script>
 
 </body>
