@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<body>
+ログイン処理中…
+
+<script>
+async function verifyScratchAuth() {
+  const params = new URLSearchParams(location.search);
+  const privateCode = params.get("privateCode");
+
+  if (!privateCode) {
+    document.body.innerHTML = "認証コードがありません";
+    return;
+  }
+
+  // ScratchAuth に検証を依頼
+  const res = await fetch(
+    `https://auth.itinerary.eu.org/api/auth/verifyToken?privateCode=${privateCode}`
+  );
+  const data = await res.json();
+
+  if (data.valid) {
+    const username = data.username;
+
+    // Scratch API からアイコン取得
+    const userRes = await fetch(`https://api.scratch.mit.edu/users/${username}`);
+    const userData = await userRes.json();
+    const icon = userData.profile.images["90x90"];
+
+    // ローカルに保存（コメント投稿で使う）
+    localStorage.setItem("scratchUser", username);
+    localStorage.setItem("scratchIcon", icon);
+
+    // ホームに戻す
+    location.href = "/";
+  } else {
+    document.body.innerHTML = "認証に失敗しました";
+  }
+}
+
+verifyScratchAuth();
+</script>
+
+</body>
+</html>
