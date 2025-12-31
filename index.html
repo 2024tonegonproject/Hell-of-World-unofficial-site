@@ -438,7 +438,9 @@ async function sendReply(parentId) {
     })
   });
 
-  loadComments();
+  await loadComments();
+
+  toggleReplies(parentId);
 }
 /* -----------------------------------
    返信の表示/非表示
