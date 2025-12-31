@@ -280,13 +280,12 @@ function renderTree(comments, parentId, container, level) {
         // 親コメント
         renderComment(c, container, comments, level);
 
-        // ★ 返信は replies_xxx に入れる
         const replyContainer = document.getElementById("replies_" + c.id);
         renderTree(comments, c.id, replyContainer, level + 1);
 
       } else {
-        // 返信コメント
         renderReply(c, container, comments, level);
+
         renderTree(comments, c.id, container, level + 1);
       }
 
