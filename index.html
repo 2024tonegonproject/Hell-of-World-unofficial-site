@@ -304,6 +304,8 @@ function renderComment(c, container, comments, level) {
 
   const date = new Date(c.date).toLocaleString();
 
+  const hasReplies = comments.some(x => x.parent === c.id);
+
   div.innerHTML = `
     <strong>${c.name}</strong> (${date})<br>
     ${c.message}<br>
