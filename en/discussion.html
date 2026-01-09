@@ -1,47 +1,28 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en_US">
 <head>
   <meta charset="UTF-8">
-  <title>ディスカッションフォーラム</title>
+  <title>Discussion Forum</title>
   <link rel="stylesheet" href="discussion.css">
 </head>
 <body>
-  <h1>ディスカッション+HOWスタジオ作品全掲載</h1>
-  <h2>スタジオの作品一覧</h2>
+  <h1>Discussion + HOW Studio: All Works Featured</h1>
+  <h2>Studio's Works List</h2>
   <div id="scratch-projects"></div>
   
-      <h2>ディスカッション(Githubアカウント不要)</h2>
+      <h2>Discussion (No GitHub account required)</h2>
 </form>
 <form id="commentForm">
-  <input type="text" id="name" placeholder="名前" required>
-  <textarea id="message" placeholder="メッセージ" required></textarea>
-  <button type="submit">送信</button>
+  <input type="text" id="name" placeholder="Name" required>
+  <textarea id="message" placeholder="Message" required></textarea>
+  <button type="submit">Send</button>
 </form>
     <div id="comments"></div>
-  <h2>ディスカッション(Githubアカウント必要)</h2>
-    <script src="https://giscus.app/client.js"
-        data-repo="2024tonegonproject/Hell-of-World-official-site"
-        data-repo-id="R_kgDOQvIQjw"
-        data-category="Announcements"
-        data-category-id="DIC_kwDOQvIQj84C0VU_"
-        data-mapping="pathname"
-        data-strict="0"
-        data-reactions-enabled="1"
-        data-emit-metadata="0"
-        data-input-position="bottom"
-        data-theme="preferred_color_scheme"
-        data-lang="ja"
-        crossorigin="anonymous"
-        async>
-    </script>
-
-
 
 <h5>© 2026 2024tonegonproject | Hell of World © 2026 Siratama1538 | UNDERTALE © Toby Fox 2013–2026. All rights reserved.<br>
-      This site Is a UNDERTALE's fan-made game "Hell of World" site.<br>
-      このサイトはUNDERTALEのファンメイドゲーム、「Hell of World」のサイトです。<br>
+      This site Is a UNDERTALE's fan-made game "Hell of World" site.<br><br>
       </h5>
-<script src="fade.js"></script>
+<script src="/fade.js"></script>
 <script>
 const WORKER_URL = "https://noisy-sound-60af.tgrk-2024tgproject-official.workers.dev/";
 
@@ -100,8 +81,8 @@ function renderComment(c, container, comments, level) {
   div.innerHTML = `
     <strong>${c.name}</strong> <span style="opacity:0.7;">(${date})</span><br>
     ${c.message}<br>
-    <button onclick="replyTo('${c.id}')">返信</button>
-    <button onclick="deleteComment('${c.id}')">削除</button>
+    <button onclick="replyTo('${c.id}')">Reply</button>
+    <button onclick="deleteComment('${c.id}')">Delete</button>
   `;
 
   container.appendChild(div);
@@ -124,8 +105,8 @@ function renderReply(c, container, comments, level) {
     ↳ <strong>${c.name}</strong> <span style="opacity:0.7;">(${date})</span><br>
     <span style="opacity:0.7;">@${parentName}</span><br>
     ${c.message}<br>
-    <button onclick="replyTo('${c.id}')">返信</button>
-    <button onclick="deleteComment('${c.id}')">削除</button>
+    <button onclick="replyTo('${c.id}')">Reply</button>
+    <button onclick="deleteComment('${c.id}')">Delete</button>
   `;
 
   container.appendChild(div);
@@ -171,9 +152,9 @@ function replyTo(parentId) {
   form.style.background = "#fafafa";
 
   form.innerHTML = `
-    <input id="replyName" placeholder="名前" style="display:block; margin-bottom:5px; width:200px;">
-    <textarea id="replyMessage" placeholder="返信内容" style="display:block; margin-bottom:5px; width:300px; height:60px;"></textarea>
-    <button id="replySend">送信</button>
+    <input id="replyName" placeholder="Name" style="display:block; margin-bottom:5px; width:200px;">
+    <textarea id="replyMessage" placeholder="Message" style="display:block; margin-bottom:5px; width:300px; height:60px;"></textarea>
+    <button id="replySend">Send</button>
   `;
 
   // 親コメントの下に挿入
@@ -207,7 +188,7 @@ function replyTo(parentId) {
    コメント削除
 ----------------------------------- */
 function deleteComment(id) {
-  if (!confirm("本当に削除しますか？")) return;
+  if (!confirm("delete?")) return;
 
   fetch(WORKER_URL + "?id=" + id, {
     method: "DELETE"
