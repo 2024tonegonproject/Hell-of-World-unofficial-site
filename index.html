@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>ディスカッションフォーラム</title>
+</head>
+<script>    
+  // ブラウザの言語を取得（例: "ja", "en-US", "fr"）
+  const lang = navigator.language || navigator.userLanguage;
+
+  // 言語コードを2文字に切り詰める
+  const short = lang.substring(0, 2);
+
+  // 対応している言語一覧
+  const supported = ["ja", "en",];
+
+  // 対応していない言語ならデフォルトへ
+  const target = supported.includes(short) ? short : "en";
+
+  // リダイレクト
+  window.location.href = `/${target}/`;
+</script>
