@@ -33,6 +33,17 @@ body {
   background-color: #000;
   color: #fff;
 }
+
+a {
+  color: #ffff00;
+  text-align: center;
+}
+
+a:hover {
+  color: #ff2020;
+  text-align: center;
+}
+
 p {
     text-align: center;
 }
