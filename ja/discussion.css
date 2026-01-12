@@ -26,6 +26,16 @@ h5 {
   text-align: center;
 }
 
+a {
+  color: #ffff00;
+  text-align: center;
+}
+
+a:hover {
+  color: #ff2020;
+  text-align: center;
+}
+
 body {
   font-size: 14px;
   font-family: "JF-Dot-Ayu18","Yu Gothic",sans-serif;
