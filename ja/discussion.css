@@ -79,6 +79,19 @@ p {
   border-radius: 6px;
 }
 
+.project-title { 
+  margin-top: 6px; 
+  font-size: 14px; 
+  color: #fff; 
+  animation: fadeUp 0.6s ease forwards;
+} 
+.project-author { 
+  margin-top: 2px; 
+  font-size: 12px; 
+  color: #ccc; 
+  animation: fadeUp 0.6s ease forwards;
+}
+
 @keyframes fadeUp {
   to {
     opacity: 1;
