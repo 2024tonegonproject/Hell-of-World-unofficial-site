@@ -1,4 +1,9 @@
-projects.forEach((item, index) => {
+fetch("https://2024tonegonproject.github.io/Hell-of-World-official-site/projects.json?v=" + Date.now())
+  .then(res => res.json())
+  .then(projects => {
+    const container = document.getElementById("scratch-projects");
+
+    projects.forEach((item, index) => {
   const card = document.createElement("div");
   card.classList.add("project-card");
 
@@ -20,3 +25,5 @@ projects.forEach((item, index) => {
   card.appendChild(title);
   container.appendChild(card);
 });
+
+  });
