@@ -5,8 +5,9 @@ fetch("https://2024tonegonproject.github.io/Hell-of-World-official-site/projects
 
     projects.forEach((item, index) => {
       const id = item.id;
+      const image = item.image;
 
-      const thumb = `https://cdn2.scratch.mit.edu/get_image/project/${id}_282x210.png`;
+      const thumb = `image`;
 
       const link = document.createElement("a");
       link.href = `https://scratch.mit.edu/projects/${id}/`;
