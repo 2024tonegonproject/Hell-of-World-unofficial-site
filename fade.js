@@ -16,11 +16,10 @@ fetch("https://2024tonegonproject.github.io/Hell-of-World-official-site/projects
   img.classList.add("scratch-thumb");
   img.style.animationDelay = `${index * 0.1}s`;
 
-  const title = document.createElement("div");
-  titleLink.href = `https://scratch.mit.edu/projects/${item.id}/`; 
-  titleLink.target = "_blank";
-  title.classList.add("project-title");
-  title.textContent = item.title;
+  const titleLink = document.createElement("a");
+   titleLink.href = `https://scratch.mit.edu/projects/${item.id}/`; 
+   titleLink.target = "_blank"; titleLink.classList.add("project-title"); 
+   titleLink.textContent = item.title;
 
   const author = document.createElement("a"); 
   author.classList.add("project-author"); 
