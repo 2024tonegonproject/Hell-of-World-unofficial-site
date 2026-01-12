@@ -1,4 +1,4 @@
-fetch("projects.json?v=" + Date.now())
+fetch("https://2024tonegonproject.github.io/Hell-of-World-official-site/projects.json?v=" + Date.now())
   .then(res => res.json())
   .then(projects => {
     const container = document.getElementById("scratch-projects");
