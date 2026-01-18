@@ -3,6 +3,10 @@
   src: url("/Hell-of-World-official-site/fonts/JF-Dot-Ayu-18.woff") format("woff");
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 #gene, #prog, #homage, #Setts, #Story, #Char, #comments {
     scroll-margin-top: 20vh;
 }
